@@ -20,16 +20,16 @@ jobs:
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-python
-            mingw-w64-ucrt-x86_64-git
-
-      # Runs a single command using the runners shell
-      - name: Clone and Build
-        shell: msys2 {0}
+      - name: Clone, Patch and Fetch Dependencies
+        shell: pwsh
         run: |
           git clone https://dawn.googlesource.com/dawn
           cd dawn
-          git apply "${{ github.workspace }}/build.patch"
+          git apply --union "${{ github.workspace }}/build.patch"
           python tools/fetch_dawn_dependencies.py
+      - name: Build
+        shell: msys2 {0}
+        run: |
           mkdir -p out/Debug
           cd out/Debug
           cmake -S ../.. -DDAWN_ENABLE_D3D12=OFF -DDAWN_ENABLE_D3D11=OFF -DDAWN_ENABLE_VULKAN=ON -DDAWN_USE_GLFW=OFF -DDAWN_BUILD_SAMPLES=OFF -DDAWN_ENABLE_NULL=OFF -D DAWN_USE_WINDOWS_UI=OFF -D TINT_BUILD_HLSL_WRITER=OFF -DDAWN_ENABLE_INSTALL=ON -DCMAKE_BUILD_TYPE=Release
