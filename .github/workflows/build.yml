@@ -50,6 +50,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dawn-x86-64-windows-gnu-release
-          path: dawn-x86-64-windows-gnu-release.tar.gz
+          path: dawn/dawn-x86-64-windows-gnu-release.tar.gz
           if-no-files-found: error
           compression-level: 0
